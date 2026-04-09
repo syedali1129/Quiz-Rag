@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorAI Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="page-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <p class="eyebrow">Adaptive RAG Quiz App</p>
+        <h1>TutorAI Studio</h1>
+        <p class="muted">A calmer, cleaner study workflow with topic tracking, hints, and concept explanations.</p>
+      </div>
+
+      <section class="panel upload-panel">
+        <div class="panel-heading">
+          <h2>Study Material</h2>
+          {% if uploaded_filename %}
+            <span class="tag">{{ uploaded_filename }}</span>
+          {% endif %}
+        </div>
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="stack">
+          <label class="file-picker">
+            <span>Select a PDF</span>
+            <input type="file" name="document" accept=".pdf,application/pdf" required>
+          </label>
+          <button class="primary-btn" type="submit">Build Knowledge Base</button>
+        </form>
+      </section>
+
+      <section class="panel metrics-panel">
+        <div class="panel-heading">
+          <h2>Session Snapshot</h2>
+        </div>
+        <div class="metric-grid">
+          <article>
+            <span>Answered</span>
+            <strong>{{ metrics.answered }}</strong>
+          </article>
+          <article>
+            <span>Accuracy</span>
+            <strong>{{ metrics.accuracy }}%</strong>
+          </article>
+          <article>
+            <span>Topics</span>
+            <strong>{{ metrics.topics }}</strong>
+          </article>
+          <article>
+            <span>Mastered</span>
+            <strong>{{ metrics.mastered }}</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel topics-panel">
+        <div class="panel-heading">
+          <h2>Topic Radar</h2>
+        </div>
+        {% if topic_cards %}
+          <div class="topic-list">
+            {% for card in topic_cards %}
+              <article class="topic-card">
+                <div class="topic-card-top">
+                  <h3>{{ card.name }}</h3>
+                  <span class="pill pill-{{ card.difficulty }}">{{ card.difficulty }}</span>
+                </div>
+                <div class="progress-row">
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: {{ card.accuracy }}%;"></div>
+                  </div>
+                  <span>{{ card.accuracy }}%</span>
+                </div>
+                <p>{{ card.attempts }} attempts so far</p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="empty-copy">Upload a PDF to discover the core topics automatically.</p>
+        {% endif %}
+      </section>
+
+      <form action="{{ url_for('reset') }}" method="post">
+        <button class="ghost-btn danger" type="submit">Reset Progress</button>
+      </form>
+    </aside>
+
+    <main class="main-content">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Personalized Question Flow</p>
+          <h2>Practice where your understanding is weakest.</h2>
+          <p class="muted large">Your next question is chosen from the topic that needs the most attention, then the difficulty adjusts as you improve.</p>
+        </div>
+        <form action="{{ url_for('next_question') }}" method="post">
+          <button class="primary-btn jumbo" type="submit" {% if not doc_loaded %}disabled{% endif %}>Generate Next Question</button>
+        </form>
+      </section>
+
+      {% if status_message %}
+        <section class="banner banner-{{ status_variant }}">{{ status_message }}</section>
+      {% endif %}
+
+      {% if not doc_loaded %}
+        <section class="panel empty-state">
+          <h3>Start with your class material</h3>
+          <p>Upload lecture notes, textbook pages, or a review guide in PDF form. TutorAI will index the content, extract topics, and turn them into adaptive quiz questions.</p>
+        </section>
+      {% endif %}
+
+      {% if current_question %}
+        <section class="panel question-panel">
+          <div class="question-meta">
+            <span class="tag">{{ current_topic }}</span>
+            <span class="pill pill-{{ current_difficulty }}">{{ current_difficulty }}</span>
+          </div>
+          <h3>{{ current_question.question }}</h3>
+
+          <div class="hint-block">
+            <form action="{{ url_for('toggle_hint') }}" method="post">
+              <button class="ghost-btn" type="submit">
+                {% if hint_shown %}Hide Hint{% else %}Show Hint{% endif %}
+              </button>
+            </form>
+            {% if hint_shown %}
+              <p class="hint-copy">{{ current_question.hint }}</p>
+            {% endif %}
+          </div>
+
+          <form action="{{ url_for('submit_answer') }}" method="post" class="stack">
+            <label for="answer" class="field-label">Your answer</label>
+            <textarea id="answer" name="answer" rows="7" placeholder="Explain your answer in your own words..." required></textarea>
+            <button class="primary-btn" type="submit">Submit Answer</button>
+          </form>
+        </section>
+      {% endif %}
+
+      {% if last_feedback %}
+        <section class="panel feedback-panel {% if last_feedback.correct %}feedback-good{% else %}feedback-bad{% endif %}">
+          <div class="panel-heading">
+            <h2>{% if last_feedback.correct %}Nice work{% else %}Let’s tighten this up{% endif %}</h2>
+            <span class="tag">{% if last_feedback.correct %}Correct{% else %}Needs Review{% endif %}</span>
+          </div>
+          <p>{{ last_feedback.feedback }}</p>
+          {% if not last_feedback.correct %}
+            <div class="answer-review">
+              <h3>Expected answer</h3>
+              <p>{{ last_feedback.answer }}</p>
+            </div>
+          {% endif %}
+        </section>
+      {% endif %}
+
+      {% if explanation %}
+        <section class="panel explanation-panel">
+          <div class="panel-heading">
+            <h2>Concept Explanation</h2>
+          </div>
+          <div class="explanation-copy">{{ explanation }}</div>
+        </section>
+      {% endif %}
+
+      {% if mastery_summary %}
+        <section class="panel dashboard-panel">
+          <div class="panel-heading">
+            <h2>Mastery Dashboard</h2>
+          </div>
+          <div class="dashboard-table">
+            <div class="table-head">Topic</div>
+            <div class="table-head">Accuracy</div>
+            <div class="table-head">Difficulty</div>
+            <div class="table-head">Attempts</div>
+            {% for topic, data in mastery_summary.items() %}
+              <div>{{ topic }}</div>
+              <div>{{ data.accuracy }}</div>
+              <div><span class="pill pill-{{ data.difficulty }}">{{ data.difficulty }}</span></div>
+              <div>{{ data.attempts }}</div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+    </main>
+  </div>
+</body>
+</html>

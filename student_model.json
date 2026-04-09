@@ -1,0 +1,102 @@
+{
+  "topics": {
+    "Deterministic Models": {
+      "accuracy": 0.0,
+      "attempts": 2,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": true
+    },
+    "Probabilistic Models": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Principal Analysis": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Data Dimensionality": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Correlation Matrix": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Variance Reduction": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Probability Space": {
+      "accuracy": 0.5,
+      "attempts": 2,
+      "correct": 1,
+      "streak": 1,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Elementary Probability": {
+      "accuracy": 0.5,
+      "attempts": 2,
+      "correct": 1,
+      "streak": 1,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Conditional Probability": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Bayes Theorem": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Law Large Numbers": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    },
+    "Probability Trees": {
+      "accuracy": 0.0,
+      "attempts": 0,
+      "correct": 0,
+      "streak": 0,
+      "current_difficulty": "easy",
+      "needs_explanation": false
+    }
+  },
+  "total_answered": 6,
+  "session_correct": 2
+}
