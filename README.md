@@ -122,7 +122,3 @@ Visit `http://localhost:5000` in your browser.
 **Syed Ali** — [github.com/syedali1129](https://github.com/syedali1129)
 
 ***
-
-## 📄 License
-
-MIT License
