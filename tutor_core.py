@@ -3,7 +3,6 @@ import os
 import shutil
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
@@ -17,8 +16,11 @@ CHROMA_DIR = "./chroma_db"
 
 llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4)
 llm_precise = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001",
+    google_api_key=os.getenv("GOOGLE_API_KEY")
+)
 
 def ingest_document(file_path: str) -> Chroma:
     if os.path.exists(CHROMA_DIR):
