@@ -19,7 +19,11 @@ BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = Path("/tmp/uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-app = Flask(__name__)
+import os
+app = Flask(__name__,
+    template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'templates'),
+    static_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'static')
+)
 app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY", "quiz-rag-dev-key")
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
 
