@@ -18,7 +18,7 @@ llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4)
 llm_precise = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 embeddings = GoogleGenerativeAIEmbeddings(
-    model="models/embedding-001",
+    model="models/text-embedding-004",
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
 
