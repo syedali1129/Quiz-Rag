@@ -12,7 +12,7 @@ from langchain_core.output_parsers import StrOutputParser
 load_dotenv()
 os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN", "")
 
-CHROMA_DIR = "./chroma_db"
+CHROMA_DIR = "/tmp/chroma_db"
 
 llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4)
 llm_precise = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
