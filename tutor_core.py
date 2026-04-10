@@ -16,10 +16,16 @@ CHROMA_DIR = "/tmp/chroma_db"
 
 llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4)
 llm_precise = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
+
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+import google.generativeai as genai
+
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+
 embeddings = GoogleGenerativeAIEmbeddings(
     model="models/text-embedding-004",
-    google_api_key=os.getenv("GOOGLE_API_KEY")
+    google_api_key=os.getenv("GOOGLE_API_KEY"),
+    transport="rest"
 )
 
 def ingest_document(file_path: str) -> Chroma:
