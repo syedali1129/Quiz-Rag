@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+  <div id="eval-loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <h2>Evaluating your answer with AI...</h2>
+  </div>
   <div class="page-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -132,7 +136,7 @@
             {% endif %}
           </div>
 
-          <form action="{{ url_for('submit_answer') }}" method="post" class="stack">
+          <form action="{{ url_for('submit_answer') }}" method="post" class="stack" onsubmit="document.getElementById('eval-loading-overlay').classList.add('active');">
             <label for="answer" class="field-label">Your answer</label>
             <textarea id="answer" name="answer" rows="7" placeholder="Explain your answer in your own words..." required></textarea>
             <button class="primary-btn" type="submit">Submit Answer</button>
