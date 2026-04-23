@@ -33,7 +33,9 @@ def ingest_document(file_path: str) -> Chroma:
         shutil.rmtree(CHROMA_DIR)
     loader = PyPDFLoader(file_path)
     docs = loader.load()
-    splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=80)
+    # Improvement for Assignment 6: Improved chunking parameters to preserve context and reduce fragmentation.
+    # Increased chunk size and overlap so related concepts aren't split unnaturally.
+    splitter = RecursiveCharacterTextSplitter(chunk_size=1200, chunk_overlap=250)
     chunks = splitter.split_documents(docs)
     vectorstore = Chroma.from_documents(
         chunks, embeddings, persist_directory=CHROMA_DIR
