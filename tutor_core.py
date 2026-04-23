@@ -14,8 +14,8 @@ os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN", "")
 
 CHROMA_DIR = "/tmp/chroma_db"
 
-llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4)
-llm_precise = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4, api_key=os.environ.get("GROQ_API_KEY", "dummy_key"))
+llm_precise = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0, api_key=os.environ.get("GROQ_API_KEY", "dummy_key"))
 
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import google.generativeai as genai
@@ -24,7 +24,7 @@ genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 embeddings = GoogleGenerativeAIEmbeddings(
     model="models/text-embedding-004",
-    google_api_key=os.getenv("GOOGLE_API_KEY"),
+    google_api_key=os.getenv("GOOGLE_API_KEY", "dummy_key"),
     transport="rest"
 )
 
