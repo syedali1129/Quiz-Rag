@@ -36,8 +36,8 @@ class StudentModel:
             t.needs_explanation=False
             self.session_correct+=1
 
-            #Advance difficulty ad 3 correct answers
-            if t.streak>=3:
+            #Advance difficulty after 5 correct answers
+            if t.streak>=5:
                 idx=DIFFICULTIES.index(t.current_difficulty)
                 if idx< len(DIFFICULTIES)-1:
                     t.current_difficulty=DIFFICULTIES[idx+1]
